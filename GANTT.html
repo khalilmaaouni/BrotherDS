@@ -1,0 +1,262 @@
+<title>BrotherDS Progress</title>
+<style>
+  :root {
+    --paper:#F7F8F6; --surface:#FFFFFF; --ink:#141B22; --ink-soft:#4A5560;
+    --ink-faint:#7C8791; --rule:#DFE3DE;
+    --petrol:#0E7A6F; --petrol-wash:#E7F1EF;
+    --missing:#9B3A2F; --missing-wash:#F6E9E6;
+    --partial:#8A6410; --partial-wash:#F5EEDC;
+    --human:#2C4A7C; --human-wash:#E6ECF5;
+    --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --body:Seravek,"Gill Sans Nova",Avenir,"Segoe UI",system-ui,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#101720;--surface:#16202A;--ink:#E8ECE9;--ink-soft:#AEB8C0;
+    --ink-faint:#7E8A94;--rule:#26323D;--petrol:#3AA893;--petrol-wash:#10302C;
+    --missing:#E0806F;--missing-wash:#341E1A;--partial:#D6A94A;--partial-wash:#2E2716;
+    --human:#8FB0E0;--human-wash:#17233A;}}
+  :root[data-theme="dark"]{
+    --paper:#101720;--surface:#16202A;--ink:#E8ECE9;--ink-soft:#AEB8C0;
+    --ink-faint:#7E8A94;--rule:#26323D;--petrol:#3AA893;--petrol-wash:#10302C;
+    --missing:#E0806F;--missing-wash:#341E1A;--partial:#D6A94A;--partial-wash:#2E2716;
+    --human:#8FB0E0;--human-wash:#17233A;}
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--body);
+    font-size:17px;line-height:1.6;margin:0;padding:0 5vw 6rem;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:60rem;margin:0 auto;}
+  header{padding:3.5rem 0 1.6rem;border-bottom:2px solid var(--ink);display:grid;gap:.7rem;}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--petrol);}
+  h1{font-family:var(--display);font-weight:400;margin:0;
+    font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.06;letter-spacing:-.015em;text-wrap:balance;}
+  .stamp{font-family:var(--mono);font-size:.74rem;color:var(--ink-faint);line-height:1.7;}
+  h2{font-family:var(--display);font-weight:400;font-size:1.5rem;margin:3rem 0 .4rem;text-wrap:balance;}
+  h3{font-family:var(--display);font-weight:400;font-size:1.1rem;margin:0;}
+  p{max-width:46rem;}
+
+  .northstar{background:var(--petrol-wash);border-left:4px solid var(--petrol);
+    padding:1.3rem 1.5rem;margin:2rem 0 .5rem;}
+  .northstar .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--petrol);}
+  .northstar .v{font-family:var(--display);font-size:1.5rem;line-height:1.25;margin:.3rem 0;}
+  .northstar p{margin:.5rem 0 0;color:var(--ink-soft);font-size:.95rem;}
+
+  .strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));
+    gap:1px;background:var(--rule);border:1px solid var(--rule);margin:1.4rem 0;}
+  .strip div{background:var(--surface);padding:1rem 1.1rem;display:grid;gap:.35rem;align-content:start;}
+  .strip .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint);}
+  .strip .v{font-size:.95rem;line-height:1.45;}
+  .strip .v strong{font-family:var(--display);font-size:1.05rem;font-weight:400;}
+
+  .gantt{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.5rem;}
+  .gantt th{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-faint);text-align:left;padding:.4rem .5rem;border-bottom:1px solid var(--ink-soft);}
+  .gantt td{padding:.4rem .5rem;border-bottom:1px solid var(--rule);vertical-align:middle;}
+  .gantt td.lab{width:19rem;}
+  .gantt td.n{font-family:var(--mono);font-size:.76rem;color:var(--ink-faint);
+    white-space:nowrap;width:3.5rem;text-align:right;}
+  .bar{height:.85rem;border:1px solid var(--petrol);position:relative;}
+  .bar i{display:block;height:100%;background:var(--petrol);}
+  .bar.sched{border-color:var(--ink-faint);
+    background:repeating-linear-gradient(45deg,transparent,transparent 4px,var(--rule) 4px,var(--rule) 8px);}
+  .bar.risk{border-color:var(--missing);}
+  .bar.risk i{background:var(--missing);}
+  .scroll{overflow-x:auto;}
+
+  .cards{display:grid;gap:1rem;margin-top:1.2rem;}
+  .card{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--human);
+    padding:1.1rem 1.3rem;display:grid;gap:.45rem;}
+  .card.risk{border-left-color:var(--missing);}
+  .card.done{border-left-color:var(--petrol);}
+  .card .tag{font-family:var(--mono);font-size:.64rem;letter-spacing:.11em;
+    text-transform:uppercase;color:var(--human);}
+  .card.risk .tag{color:var(--missing);}
+  .card.done .tag{color:var(--petrol);}
+  .card p{margin:0;color:var(--ink-soft);font-size:.95rem;}
+  .card p.lead{color:var(--ink);}
+
+  .phase{background:var(--surface);border:1px solid var(--rule);margin-top:1rem;}
+  .phase>.h{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+    padding:.8rem 1.1rem;border-bottom:1px solid var(--rule);}
+  .chip{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;padding:.2rem .5rem;
+    border:1px solid var(--petrol);color:var(--petrol);background:var(--petrol-wash);white-space:nowrap;}
+  .chip.open{border-color:var(--ink-faint);color:var(--ink-faint);background:transparent;}
+  .item{padding:.7rem 1.1rem;border-bottom:1px solid var(--rule);display:grid;gap:.3rem;}
+  .item:last-child{border-bottom:0;}
+  .item .t{font-size:.95rem;}
+  .item .t::before{content:"[ ] ";font-family:var(--mono);color:var(--ink-faint);}
+  .item.tick .t::before{content:"[x] ";color:var(--petrol);}
+  .item .ev{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);
+    white-space:pre-wrap;word-break:break-word;background:var(--paper);
+    padding:.4rem .55rem;border-left:2px solid var(--rule);}
+  .item.tick .ev{border-left-color:var(--petrol);color:var(--ink-soft);}
+
+  footer{margin-top:3.5rem;padding-top:1.2rem;border-top:2px solid var(--ink);
+    font-size:.88rem;color:var(--ink-faint);}
+  footer p{max-width:46rem;}
+  code,.mono{font-family:var(--mono);font-size:.87em;}
+  a{color:var(--petrol);}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">BrotherDS</div>
+  <h1>BrotherDS inside the one Brother repository</h1>
+  <p class="stamp">
+    Refreshed 2026-08-22 (JST afternoon) by session eab3d639, the merger-analysis session, at 8084340<br>
+    A box ticks only when its done-check ran after the last edit and its output is quoted beside it; percentages are counts of records, never impressions.
+  </p>
+</header>
+
+<div class="northstar">
+  <div class="k">North star</div>
+  <div class="v">Verified Claim Rate</div>
+  <p>Of the decision-grade claims that have been scored against reality, the share whose realised outcome fell inside the uncertainty they stated at the time (<code>SPEC.md</code>). The founder's round four words of 2026-08-22 name where this product now sits: "Merge them under Brother new repo." BrotherDS keeps this north star inside that repository; the merge changes only when its capability is allowed to leave experimental status, at the first resolved claim.</p>
+</div>
+
+<div class="strip">
+  <div><span class="k">Now</span><span class="v"><strong>PRIVATE, pushed, one pull request open.</strong> Branch <code class="mono">feature/north-star-chain-and-native-seam</code> at <code class="mono">8084340</code>, equal to origin. PR 1 is OPEN into <code class="mono">v1-claim-receipt</code>. The engine's own selftest reads <code class="mono">SELFTEST PASS</code>. Thirty private-term matches remain, in two files, down from 104 in nine at the prior commit. The queue holds 12 items; three moved today.</span></div>
+  <div><span class="k">Waiting on Khalil</span><span class="v"><strong>Four things.</strong> Decision 1, which of the three paths; decision 2, the open boundary question; PR 1's merge, his call, held by timing gate condition 3; and the freeze amendment, drafted PROPOSED in the ADR, landed only by his hand.</span></div>
+  <div><span class="k">Risk watch</span><span class="v"><strong>Two files still name the private terms.</strong> No public tree may exist while they do; the history keeps names even after a file is edited, so the route is a clean extraction, never a scrub. Second: BrotherDS ships routed as experimental in the merged product's entry point until its first claim resolves against reality, which has not happened yet.</span></div>
+  <div><span class="k">Forecast</span><span class="v"><strong>Seven prep items, 510 briefed agent minutes.</strong> P3 30, P4 120, P5 60, P7 120, P11 45, P14 15, P18 120. At 1.39 optimistic to 2.24 calibrated, that reads about 709 to 1142 agent minutes, not one session's work.</span></div>
+</div>
+
+<h2>Short range, 2026-08-22 to 2026-08-29</h2>
+<p>Hatched bars are scheduled, not done; solid bars carry the fraction actually closed. Nothing below has started.</p>
+<div class="scroll">
+<table class="gantt">
+  <thead><tr><th>Item</th><th>2026-08-22 to 2026-08-29</th><th>n/m</th></tr></thead>
+  <tbody>
+    <tr><td class="lab">P14, BrotherDS PROJECT.md status current</td><td><div class="bar sched"></div></td><td class="n">0/1</td></tr>
+    <tr><td class="lab">P3, the passport's second read-only consumer authorised</td><td><div class="bar sched"></div></td><td class="n">0/1</td></tr>
+    <tr><td class="lab">P5, passport conformance on the same fixture bytes, all three sides</td><td><div class="bar sched"></div></td><td class="n">0/1</td></tr>
+    <tr><td class="lab">P11, BrotherDS internal context separated</td><td><div class="bar sched"></div></td><td class="n">0/1</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Long range, to 2026-10-31</h2>
+<p>The merge and phase 5 wait on the timing gate; the gate waits on the prep list and the founder's decisions.</p>
+<div class="scroll">
+<table class="gantt">
+  <thead><tr><th>Item</th><th>2026-08-22 to 2026-10-31</th><th>n/m</th></tr></thead>
+  <tbody>
+    <tr><td class="lab">The seven prep items, P3 through P18</td><td><div class="bar sched"></div></td><td class="n">0/7</td></tr>
+    <tr><td class="lab">BrotherDS's six vault decisions, answered by the founder</td><td><div class="bar"><i style="width:67%"></i></div></td><td class="n">4/6</td></tr>
+    <tr><td class="lab">Timing gate conditions 3 and 7, this product's half</td><td><div class="bar sched"></div></td><td class="n">0/2</td></tr>
+    <tr><td class="lab">The merge itself (ADR M2 to M5)</td><td><div class="bar sched"></div></td><td class="n">0/1</td></tr>
+    <tr><td class="lab">Phase 5 promotion from experimental</td><td><div class="bar sched"></div></td><td class="n">0/1</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Decisions waiting on you</h2>
+<div class="cards">
+  <div class="card">
+    <span class="tag">Decision 1 &middot; highest stakes</span>
+    <h3>Which of the three paths</h3>
+    <p class="lead">Still open. The Closed Loop, the Night Auditor, or the Open Referee, ranked and costed in <code>OPTIONS.md</code>. Nothing in the merger roadmap resolves it; it is still named in phase 1 item 1.9 as yours.</p>
+  </div>
+  <div class="card">
+    <span class="tag">Decision 2 &middot; yours alone</span>
+    <h3>The open boundary question</h3>
+    <p class="lead">Still open. <code>docs/SCOPE-2026-08-12-founder-directive.md</code> section 3, items 6 and 7 against ground BrotherMode and BrotherSBE already hold. The evidence study recommends a split; it does not resolve it for you.</p>
+  </div>
+  <div class="card">
+    <span class="tag">PR 1 &middot; blocks timing gate condition 3</span>
+    <h3>The merge of pull request 1</h3>
+    <p class="lead">OPEN into <code>v1-claim-receipt</code>. The timing gate's condition 3 (this product's internal context separated, PR 1 resolved) reads NOT MET while it stays open, alongside the thirty remaining private-term matches.</p>
+  </div>
+  <div class="card">
+    <span class="tag">The freeze amendment &middot; his hand only</span>
+    <h3>Landing the surface freeze change</h3>
+    <p class="lead">The ADR's round four drafts the sentence: the merged product's surface is redesigned once, at the merge, around one entry point and the shrink-by-a-third criterion, then frozen again. It stays PROPOSED, inside the larger PRODUCT-DIRECTION amendment, until he lands it in his own words.</p>
+  </div>
+</div>
+
+<h2>Risk management, insights and alerts</h2>
+<div class="cards">
+  <div class="card risk">
+    <span class="tag">Risk &middot; blocks any public tree</span>
+    <h3>Thirty private-term matches remain, in two files</h3>
+    <p><strong>What.</strong> <code>docs/SCOPE-2026-08-12-founder-directive.md</code> (4 matches) and <code>research/A3 (its name carries two terms)</code> (26 matches, and its own filename carries two terms), 30 in total at <code class="mono">8084340</code>, down from 104 in nine files at the prior commit. <strong>Why it matters.</strong> History carries names forward even after a file is edited; the standing law is a clean extraction, never a scrub, so these two files must be rewritten or the whole file renamed before this repository's history ever reaches a public remote. Timing gate condition 3 reads this grep directly. <strong>Action.</strong> Rewrite both to roles, rename the research file, per P11 and decision 5 (already answered yes as a precondition). <strong>When.</strong> Before condition 3 can read MET; scheduled as P11, 45 agent minutes.</p>
+  </div>
+  <div class="card risk">
+    <span class="tag">Granted, not yet landed &middot; P3</span>
+    <h3>The passport reader stays UNAUTHORISED until the sentence lands</h3>
+    <p><strong>What.</strong> <code>bds.py passport</code> is built and reads <code>.sbe/passport.json</code> read-only, but still carries its UNAUTHORISED cap. <strong>Why it matters.</strong> The founder granted the second read-only consumer on 2026-08-22, but a grant in a decisions file is not the same as the sentence living in both seam contracts. <strong>Action.</strong> Land the sentence in BrotherSBE's <code>docs/specs/2026-08-15-change-passport-seam.md</code> and this repository's <code>docs/TRIUMVIRATE-INTEGRATION.md</code>, then the cap drops. <strong>When.</strong> P3, 30 agent minutes, founder window then haiku.</p>
+  </div>
+  <div class="card risk">
+    <span class="tag">Granted, not yet landed &middot; P4</span>
+    <h3>The handoff shape stays unratified until the assurance product writes it</h3>
+    <p><strong>What.</strong> <code>bds.py handoff</code> still refuses to certify, capped at NO-DATA. <strong>Why it matters.</strong> The content of the five-item handoff package was contracted on 2026-08-11; the field names and file format never were. BrotherDS's reader is not the writer of that contract. <strong>Action.</strong> BrotherSBE writes <code>contracts/handoff-package.v1.json</code> with a fixture and a test; this reader then consumes the <code>ratified</code> marker only. <strong>When.</strong> P4, 120 agent minutes.</p>
+  </div>
+  <div class="card risk">
+    <span class="tag">Missing &middot; P7</span>
+    <h3>No VERSION, CHECKSUMS, CHANGELOG or plugin manifest</h3>
+    <p><strong>What.</strong> BrotherDS carries none of VERSION, CHANGELOG.md, CHECKSUMS.sha256 or <code>.claude-plugin/plugin.json</code>. <strong>Why it matters.</strong> The release invariant and <code>verify-install.sh</code> parity check are meant to hold across all three products; the merged repository's cutover assumes each plugin already carries them. <strong>Action.</strong> Add all four per P7. <strong>When.</strong> P7, 120 agent minutes.</p>
+  </div>
+  <div class="card risk">
+    <span class="tag">Reconciled &middot; the shape question</span>
+    <h3>The one-product page and the ADR disagreed, and the ADR's round four reconciled it</h3>
+    <p><strong>What.</strong> <code>docs/ONE-PRODUCT-2026-08-22.md</code> recommended one product under the BrotherMode name, one plugin, seams dissolved. The ADR's round three had already decided Option B, three plugins under one marketplace. <strong>Why it matters.</strong> Round four did not pick one over the other; it kept B packaging and added a harmony layer on top (one entry point that routes, one vocabulary, the seams turned into plumbing), and routed BrotherDS's own capability as experimental inside that entry point until its first claim scores against a real outcome. <strong>Action.</strong> None owed by this repository now; P18 designs the entry point and the before-measurement. <strong>When.</strong> P18, 120 agent minutes; promotion out of experimental gates on timing gate condition 7, <code>bds.py ledger</code> reporting one resolved claim.</p>
+  </div>
+  <div class="card risk">
+    <span class="tag">Lesson &middot; a verify rule, not a one-time fix</span>
+    <h3>A stale tracking ref hid five commits from the last draft of this document</h3>
+    <p><strong>What.</strong> The previous handover draft was written against <code>8840c2d</code>; the live remote had already moved five commits ahead to <code>8084340</code>, including this repository's own merge-analysis commit, and nobody compared the local ref against origin before writing it. <strong>Why it matters.</strong> A status document written against a moving HEAD reports state that was already stale the moment it was saved. <strong>Action.</strong> Run <code>git ls-remote origin refs/heads/&lt;branch&gt;</code> beside <code>git rev-parse --short HEAD</code> in every verify block, not the rev-parse alone; this document's own verify commands below do both. <strong>When.</strong> Standing rule, from now on.</p>
+  </div>
+</div>
+
+<h2>The ledger</h2>
+<p>Engine selftest, run this session: <code>$ /usr/bin/python3 bds.py selftest</code> tail line <code class="mono">SELFTEST PASS</code>.</p>
+
+<div class="phase">
+  <div class="h"><h3>The queue, docs/plan/QUEUE.json</h3><span class="chip">3/12 ticked</span></div>
+  <div class="item"><span class="t">path-selection, founder selects one of the three paths in OPTIONS.md</span><span class="ev">check: OPTIONS.md records the selection with a date and a reason</span></div>
+  <div class="item"><span class="t">boundary-question, founder answers the open boundary question</span><span class="ev">check: docs/SCOPE-2026-08-12-founder-directive.md section 3 marked resolved in the file itself</span></div>
+  <div class="item tick"><span class="t">verified-reality-owner, assign the chain's last stage</span><span class="ev">decision_2026_08_22: "Split by unit, ledger owned by BrotherDS (Recommended)"</span></div>
+  <div class="item"><span class="t">passport-consumer-authorised, the siblings permit a second read-only consumer</span><span class="ev">check: the change-passport seam spec names a second read-only consumer; until then bds.py passport is built and unauthorised (granted 2026-08-22, not yet landed as P3)</span></div>
+  <div class="item"><span class="t">handoff-wire-format, BrotherSBE ratifies a wire format for the handoff package</span><span class="ev">check: bds.py handoff returns PASS against a real package (granted 2026-08-22, not yet written as P4)</span></div>
+  <div class="item"><span class="t">authoring-cost, measure minutes to author one claim</span><span class="ev">check: minutes-per-claim recorded over at least 5 claims authored through the plugin surface</span></div>
+  <div class="item"><span class="t">plugin-surface, authoring a claim becomes a side effect of the analysis</span><span class="ev">check: skills/brotherds installed, one claim authored end to end without hand-editing JSON</span></div>
+  <div class="item"><span class="t">first-scored-claim, register claims before the next pilot month loads</span><span class="ev">check: bds.py ledger claims/ reports a rate with a denominator above zero</span></div>
+  <div class="item tick"><span class="t">survivors-reconciled, the two remaining red-team items disposed</span><span class="ev">all four now carry a named disposition in SPEC.md's reconciliation section</span></div>
+  <div class="item"><span class="t">north-star-numbers-manifest, submit the rate to BrotherSBE's numbers gate</span><span class="ev">check: sbe gate numbers returns PASS against a manifest carrying a second derivation (blocked on first-scored-claim)</span></div>
+  <div class="item tick"><span class="t">validation-policy, record which controls actually validate this project</span><span class="ev">docs/VALIDATION.md exists and names, per control, what it examines and what it does not</span></div>
+  <div class="item"><span class="t">g5-cross-class-comparison, widen G5 for the dual run</span><span class="ev">check: bds.py check on a SYSTEM plus non-SQL incumbent pairing reaches a verdict instead of refusing</span></div>
+</div>
+
+<h2>Decisions recorded</h2>
+<div class="cards">
+  <div class="card done">
+    <span class="tag">Round one &middot; 2026-08-22 about 12:0x JST &middot; question UI</span>
+    <h3>BrotherDS separates before it joins</h3>
+    <p>His words verbatim: "Yes: separate the internal context, then public MIT, before it joins (Recommended)." Decision taken: P11 is a precondition of the merge, timing gate condition 3.</p>
+  </div>
+  <div class="card done">
+    <span class="tag">Round two &middot; 2026-08-22 about 12:1x JST &middot; question UI</span>
+    <h3>The two seam requests, both granted</h3>
+    <p>The passport's second read-only consumer, his words verbatim: "Yes: authorise the read-only second consumer (Recommended)."</p>
+    <p>The handoff package wire format, his words verbatim: "BrotherSBE writes contracts/handoff-package.v1.json with a fixture and a test; BrotherDS reads the ratified marker (Recommended)."</p>
+  </div>
+  <div class="card done">
+    <span class="tag">Round three &middot; 2026-08-22 about 12:5x JST &middot; question UI</span>
+    <h3>The verified-reality owner, and the vault space</h3>
+    <p>The verified-reality owner, his words verbatim: "Split by unit, ledger owned by BrotherDS (Recommended)."</p>
+    <p>The vault space, his words verbatim: "Propose one space 10-Projects/brother at the merge, keep three until then (Recommended)."</p>
+  </div>
+  <div class="card done">
+    <span class="tag">Round four &middot; 2026-08-22 about 13:3x JST &middot; question UI</span>
+    <h3>The target repository, and the harmony delegation</h3>
+    <p>On which governs, his words verbatim: "Merge them under Brother new repo."</p>
+    <p>On the seventh gate condition, his words verbatim: "Find the right approach as Fable and handle a harmony between all functions to be seamless like Superpowers."</p>
+  </div>
+</div>
+
+<footer>
+  <p><strong>Tick contract, verbatim.</strong> A box ticks only when its done-check ran after the last edit and its output is quoted beside it; percentages are counts of records, never impressions.</p>
+  <p>Refreshed 2026-08-22 (JST afternoon) by session eab3d639, the merger-analysis session, at 8084340.</p>
+</footer>
+</div>

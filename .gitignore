@@ -1,0 +1,10 @@
+# Real data and anything derived from it never enters the public repo.
+claims/
+receipts/
+*.duckdb
+*.parquet
+*.csv
+.venv/
+__pycache__/
+.DS_Store
+.sbe/
