@@ -77,7 +77,7 @@ for the three options put to the founder.
 | Product spec | `SPEC.md` | written 2026-08-16, includes the reconciliation |
 | Three paths, ranked | `OPTIONS.md` | awaiting founder selection |
 | Engine | `bds.py` | built, 32 assertions passing |
-| Host harness skill | `skills/brotherds/SKILL.md` | written, not yet installed |
+| Claude Code skill | `skills/brotherds/SKILL.md` | written, not yet installed |
 | Progress page | `GANTT.html` | published, one stable link |
 | Research | `research/A1` to `A4`, `B1`, `B2` | six files |
 | Real claims and receipts | `claims/`, `receipts/` | gitignored, real the pilot estate data |

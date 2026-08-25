@@ -147,7 +147,7 @@ records, it never keeps its own work-state.
   inside. Deliberate pressure toward stating uncertainty.
 - A ledger command producing one page of counts, never percentages of tiny
   samples: registered, scored, held. Plain JSON stays in claims/.
-- Package as a host harness plugin: a `bds-claim` skill that makes authoring
+- Package as a Claude Code plugin: a `bds-claim` skill that makes authoring
   a SIDE EFFECT of analysis. The analyst asks a question; the session writes
   the SQL, files the claim with derivations, grain and not_established
   populated; bds.py gates it; the receipt lands beside the answer. Nobody
@@ -206,9 +206,8 @@ counter-artifact), without putting BrotherDS on the October critical path.
 Nothing in this option must land before October for October to succeed.
 
 ### First user, first hour
-The operator opens the host harness in the project directory and asks a real
-question from the estate it is used on: what is the revenue base and what growth
-is plausible. The session
+Khalil opens Claude Code in ~/Documents/BrotherDS and asks a real FY2027
+question: what is the GMV base and what growth is plausible. The session
 does the analysis, files each number as a claim, gates it, and answers with
 receipts beside the numbers. The hour ends with the ledger page showing
 what was claimed, what reality will check, and when.
