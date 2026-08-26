@@ -98,7 +98,7 @@ File format: fence lines live in STATE.md (the fence registry), written BEFORE a
 
 Five-field contract per fence, exact: "objective, output format, tool guidance, boundaries, termination condition" plus files, agent id, session id, timestamp, declared tier, and a runnable done-check.
 
-One-writer rule: "One writer per file, ever." Enforced by tools/bm_fence_hook.py as a host harness `PreToolUse` hook that "refuses a write to a file ANOTHER active claim covers, when installed" (SKILL.md safety floor section). Fails OPEN by default (unclaimed path allowed unless `BM_FENCE_STRICT=1`); does NOT gate Bash, so a shell write bypasses it undetected until later. `BM_FENCE_MODE=enforced` makes a failed check refuse instead of default-allow.
+One-writer rule: "One writer per file, ever." Enforced by tools/bm_fence_hook.py as a Claude Code `PreToolUse` hook that "refuses a write to a file ANOTHER active claim covers, when installed" (SKILL.md safety floor section). Fails OPEN by default (unclaimed path allowed unless `BM_FENCE_STRICT=1`); does NOT gate Bash, so a shell write bypasses it undetected until later. `BM_FENCE_MODE=enforced` makes a failed check refuse instead of default-allow.
 
 TTL: explicitly NONE by design. Verbatim (references/fences.md): "there is deliberately NO time-based expiry, because a law promising a lease that expires while no code expires anything is worse than no law: a fence is released by an explicit park, complete, adopt, or transfer, and a dead session's fence is ADOPTED at close by the orchestrator, never by a clock."
 

@@ -210,7 +210,7 @@ In:
 - the human-readable receipt (done)
 - the five origin protocols as required fields (done as fields, protocols
   documented, adjustment methods not yet computed)
-- a host harness plugin surface wrapping the engine
+- a Claude Code plugin surface wrapping the engine
 
 Out of V1, deliberately:
 - the accuracy ledger's scoring loop beyond a single recorded outcome
