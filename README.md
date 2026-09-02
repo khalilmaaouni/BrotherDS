@@ -1,3 +1,15 @@
+## This project has moved
+
+BrotherDS now lives in one repository together with BrotherMode and BrotherSBE:
+github.com/khalilmaaouni/Brother, developed at products/brotherds. This
+repository is retiring and will be archived read only. History stays here and
+stays readable; nothing is deleted.
+
+BrotherDS is an experimental product and is not part of the v1.0 marketplace
+bundle, which ships BrotherMode and BrotherSBE.
+
+---
+
 # BrotherDS
 
 **Every number that reaches a decision carries its proof, and is scored later
